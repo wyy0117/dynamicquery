@@ -14,13 +14,20 @@ import java.util.stream.Collectors;
  */
 public class EntityFilterWorker<T> {
 
-    public List<T> doWork(List<T> entityList, DynamicFilter<T> filter) {
-        //很多情况下,filter都是不传的.
+    private List<T>entityList;
+    private DynamicFilter<T>filter;
+
+    public EntityFilterWorker(List<T> entityList, DynamicFilter<T> filter) {
+        this.entityList = entityList;
+        this.filter = filter;
+    }
+
+    public List<T> doWork() {
         if (filter == null) {
             return entityList;
         }
 
-        //传过来的entityList有可能是不能modified的list
+        //entityList maybe can't modified so new ArrayList;
         List<T> arrayList = new ArrayList<>(entityList);
         List<T> result = filter(arrayList, filter);
         result.sort(new SortConverter<>(filter.getSorts()).convert());
@@ -53,7 +60,7 @@ public class EntityFilterWorker<T> {
             List<T> result = new ArrayList<>();
             for (Criterion<T> Criterion : filter.getCriterionList()) {
                 if (Criterion.haveSubFilter()) {
-                    result.addAll(filter(result, new DynamicFilter<>(Criterion.getOperatorType(), Criterion.getCriterionList())));
+                    result.addAll(filter(entityList, new DynamicFilter<>(Criterion.getOperatorType(), Criterion.getCriterionList())));
                 } else {
                     Predicate<T> predicate = new CriterionConverter<>(Criterion).convert();
                     result.addAll(entityList.stream().filter(predicate).collect(Collectors.toSet()));

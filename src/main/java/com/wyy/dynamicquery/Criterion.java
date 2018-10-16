@@ -16,9 +16,30 @@ public class Criterion<T> {
     private String value;
     private List<String> values;
 
+    public Criterion() {
+    }
+
+    public Criterion(String property, CriterionDataType dataType, CompareType compareType, String value) {
+        this.property = property;
+        this.dataType = dataType;
+        this.compareType = compareType;
+        this.value = value;
+    }
+
+    public Criterion(String property, CriterionDataType dataType, CompareType compareType, List<String> values) {
+        this.property = property;
+        this.dataType = dataType;
+        this.compareType = compareType;
+        this.values = values;
+    }
 
     private OperatorType operatorType;
     private List<Criterion<T>> criterionList = new ArrayList<>();
+
+    public Criterion(OperatorType operatorType, List<Criterion<T>> criterionList) {
+        this.operatorType = operatorType;
+        this.criterionList = criterionList;
+    }
 
     public boolean haveSubFilter() {
         return operatorType != null && criterionList.size() > 0;

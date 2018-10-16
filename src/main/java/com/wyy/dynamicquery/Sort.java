@@ -11,8 +11,18 @@ public class Sort<T> {
     private SortType sortType;
     private CriterionDataType dataType;
 
+    public Sort() {
+    }
+
+    public Sort(String property, SortType sortType, CriterionDataType dataType) {
+        this.property = property;
+        this.sortType = sortType;
+        this.dataType = dataType;
+    }
+
     public Sort<T> defaultSort() {
-        return new Sort<T>().setProperty("createDate").setSortType(SortType.DESC).setDataType(CriterionDataType.DATE);
+        //todo change the default sort strategy
+        return new Sort<T>().setProperty("age").setSortType(SortType.DESC).setDataType(CriterionDataType.LONG);
     }
 
     public CriterionDataType getDataType() {
