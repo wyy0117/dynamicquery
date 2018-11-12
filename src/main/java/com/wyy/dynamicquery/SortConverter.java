@@ -25,7 +25,7 @@ public class SortConverter<T> {
 
         return (T e1, T e2) -> {
             int result = 0;
-            if (sorts == null) {
+            if (sorts == null || sorts.size() == 0) {
                 sorts = Arrays.asList(new Sort<T>().defaultSort());
             }
             for (Sort<T> sort : sorts) {
